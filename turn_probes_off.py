@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from bokeh.server.start import stop
 
 class edit_design_file():
     def __init__(self):
@@ -34,7 +35,7 @@ class edit_design_file():
         return probe_list
     
     def rewrite_control_file(self, oldprobelist, file_to_filter):
-        '''this function takes the lists of probes that are to be 'turned off from the new array design and rewrite the xml file'''
+        '''this function takes the lists of probes that are to be 'turned off from the new array design and rewrites the xml file'''
         
         #load the xml file into python object
         tree=ET.parse(file_to_filter)
@@ -47,20 +48,43 @@ class edit_design_file():
             #if the probe name is not in the old array design
             if probe.attrib['name'] not in oldprobelist:
                 # add a flag to ignore the probe
-                probe.attrib['control_type']="ignore"
-        
-        # change the probe design name
-        # look through the other tags
-        for other in root.iter('other'):
-            # look for the existing array design number
-            if other.attrib['name']=="AMADID":
-                # append interim to the end 
-                other.attrib['value']=other.attrib['value']+self.name_to_modify_design_name
-        
+                probe.attrib['control_type']="ignore"       
                 
         #write the new modified design to file 
         tree.write(self.filtered_array_design)
-    
+        
+        #### Also need to write in some non-xml lines (comments and doc type)
+        
+        # open the filtered xml file created above 
+        with open(self.filtered_array_design,'r') as filtered_no_header_file:
+            
+            # create a list of all the lines in this file so we can insert lines in as required
+            filtered_no_header_list=filtered_no_header_file.readlines()
+        
+        # open the original array design file to get the non-xml lines 
+        with open(self.new_array_design,'r') as new_array_design_file:
+            # capture the top 50 lines into a list
+            top_50_lines=[next(new_array_design_file) for x in xrange(50)]
+        
+        # the top 50 lines of both files should be the same (excluding any flags to ignore the probes)
+        # we only want the non-xml stuff which occurs before the first xml tag which is 'project'
+        # loop through each item in the enumerated list of top 50 lines
+        for number,line in enumerate(top_50_lines):
+            # set a flag so once we have reached the project tag we can stop
+            stop=False
+            # when we reach the project tag, change the stop variable to true
+            if line.startswith("<project"):
+                stop=True
+            # if we haven't reached the xml yet, add the non-xml line into the same place in the filtered xml file list
+            elif not stop:
+                filtered_no_header_list.insert(number,line)
+            # if we have already reached the xml pass over
+            else:
+                pass
+        
+        # re-write the list with the non-xml added in to file.
+        with open(self.filtered_array_design,'w') as filtered_file_with_header:
+            filtered_file_with_header.writelines(filtered_no_header_list)
     
     def create_new_bedfile(self, old_probes):
         '''This function takes the list of probes on the old array design as an input. It then opens the array_design bedfile in a list, loops through it assessing if the probe name is on the old array design. if it is the line is written to a new bedfile.'''
