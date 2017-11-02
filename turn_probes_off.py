@@ -13,17 +13,17 @@ class FilterArrayDesign():
     def __init__(self):
         """Specify the input and output files"""
         # input xml file for "old" design
-        self.OldArrayDesignXML="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\dev\\028469_Guys19_110601_truncated.xml"
+        self.OldArrayDesignXML="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\array_design_028469\\028469_Guys19_110601.xml"
         # input xml file for "new" design
-        self.NewArrayDesignXML="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\dev\\CGH 4.3_085030_D_F_20170809_Guys19Truncated.xml"
+        self.NewArrayDesignXML="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\array_design_084720\\CGH 4.2_084720_D_F_20170309.xml"
         
         # input bedfile for "new" design
         self.NewArrayDesignBedfile="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\array_design_085030\\CGH 4.3_085030_D_BED_20170809.bed"
         
         # output xml file for "filtered" design
-        self.FilteredArrayDesignXML="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\dev\\truncatedtest.xml"
+        self.FilteredArrayDesignXML="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\filtered_new_design\\CGH 4.2_084720_D_F_20170309_FILTERED.xml"
         # output bedfile for "filtered" design
-        self.FilteredArrayDesignBedfile="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\dev\\ignore_me.bed"
+        self.FilteredArrayDesignBedfile="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\filtered_new_design\\ignore_me.bed"
         
                 
     def get_probe_list(self,XMLInputFile):
@@ -93,13 +93,14 @@ class FilterArrayDesign():
         # take the start of the line (<project) only as the order of the other tags can change
         WhereToStop=str(FilteredXMLFileNoHeaderList[0][0:8])
         
+        # set a flag so once we have reached the project tag we can stop
+        StopFlag=False
+        
         # loop through the list of lines from the 'new' array design. use enumerate so we can insert the lines into the list at the specific line 
         for Number,Line in enumerate(Top50Lines):
-            # set a flag so once we have reached the project tag we can stop
-            StopFlag=False
             # when we reach the project tag, change the StopFlag variable to true
             if WhereToStop in Line:
-                # set the tag to true so
+                # set the tag to true
                 StopFlag=True
             # if we haven't reached the xml yet, add the non-xml line into the same place in the filtered xml file list
             elif not StopFlag:
@@ -151,5 +152,3 @@ def main():
 
 if __name__ =="__main__":
     main()
-
-        
