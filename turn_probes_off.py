@@ -42,8 +42,6 @@ class FilterArrayDesign():
             # add the probe name to the list
             ProbeList.append(Probe.attrib['name'])
         
-        print "get_probe_list"
-        
         #return list of probes
         return ProbeList
     
