@@ -23,7 +23,7 @@ class FilterArrayDesign():
         # output xml file for "filtered" design
         self.filtered_array_design_xml="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\filtered_new_design\\CGH 4.2_084720_D_F_20170309_FILTERED.xml"
         # output bedfile for "filtered" design
-        self.filtered_array_design_bedfile="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\filtered_new_design\\ignore_me.bed"
+        self.filtered_array_design_bedfile="S:\\Genetics_Data2\\Array\\Audits and Projects\\160421 ArrayCGH v4.0 Design\\modified_design_file\\filtered_new_design\\CGH 4.3_085030_D_BED_20170809_filtered.bed"
         
                 
     def get_probe_list(self,xml_input_file):
