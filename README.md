@@ -2,7 +2,7 @@
 This repository contains scripts used to search and manipulate agilent array design files
 
 ## turn_probes_off.py
-An probes on an array design are not ISO accredited until the array has been accredited, eg through extension to scope. Therefore, after changing the array design, to maintain an ISO accredited service any unaccredited probes (probes not on the 'old' accredited array) cannot be used.
+When probes are added to an array design, these need to be validated and the resulting validation doc needs to be submitted to UKAS as an ISO15189 extension to scope. To speed things up, the new array design can be ordered, used and reported with a UKAS logo on the report (i.e. as an accredited service) if the new probes are excluded from analysis.
 
 Probes can be 'turned off' by setting that probe as a control probe in the design XML file, a file which details all the probes on the design and how they should be interpreted by the array analysis software and algorithms.
 
